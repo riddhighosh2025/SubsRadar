@@ -1,0 +1,6 @@
+{
+  "name": "SubsRadar",
+  "description": "Privacy-first recurring expense intelligence with an interactive Cost-vs-Usage matrix, What-If compound savings simulator, statement parser, and AI cancellation engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

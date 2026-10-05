@@ -1,0 +1,78 @@
+// This is your Prisma schema file for SubsRadar
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Supports SQLite ("sqlite") for local privacy-first deployment or "postgresql" for cloud
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+  CUSTOM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELING
+  CANCELED
+}
+
+enum SubscriptionCategory {
+  ENTERTAINMENT
+  UTILITIES
+  SaaS
+  FINANCE
+  HEALTH
+  OTHER
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  name           String
+  passwordHash   String          // Bcrypt hashed password
+  createdAt      DateTime        @default(now())
+  subscriptions  Subscription[]
+  savedScenarios SavedScenario[]
+
+  @@index([email])
+}
+
+model Subscription {
+  id              String               @id @default(cuid())
+  userId          String
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String               // e.g., "Netflix", "Equinox", "Adobe Creative Cloud"
+  category        SubscriptionCategory @default(SaaS)
+  customCategory  String?              // Optional user-created custom category label
+  monthlyCost     Float                // Normalized monthly cost in USD
+  billingCycle    BillingCycle         @default(MONTHLY)
+  renewalDate     DateTime             // Next scheduled renewal date
+  usageFrequency  Float                // 0 to 30 days/month (or normalized 0-10 utilization index)
+  status          SubscriptionStatus   @default(ACTIVE)
+  cancellationUrl String?              // Direct portal URL for opt-out
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@index([userId, status])
+  @@index([category])
+}
+
+model SavedScenario {
+  id                      String   @id @default(cuid())
+  userId                  String
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                    String   @default("Custom Cut Scenario")
+  targetSavings           Float    // Monthly savings target ($/mo)
+  canceledSubscriptionIds Json     // JSON array of Subscription IDs: string[]
+  annualROI               Float    // 5-year compounded return assuming 7% annual index yield
+  createdAt               DateTime @default(now())
+
+  @@index([userId])
+}
