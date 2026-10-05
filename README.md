@@ -1016,6 +1016,6 @@ If you find SubsRadar interesting:
 
 ### Track. Analyze. Understand. Take Control.
 
-Built with ❤️ BY TEAM INFINITELOOPERS**
+Built with ❤️ BY TEAM INFINITELOOPERS
 
 </div>
