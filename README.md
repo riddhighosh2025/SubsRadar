@@ -306,7 +306,7 @@ Rather than overwhelming users with financial dashboards, the goal is to provide
 
 ## 👥 Team
 
-Built with ❤️ by **Team SubsRadar**
+Built with ❤️ by **Team InfiniteLoopers**
 
 * Sankhya Bhatia
 * Riddhi Ghosh
